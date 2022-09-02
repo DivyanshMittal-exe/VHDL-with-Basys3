@@ -21,17 +21,18 @@ begin
 
   process (clk, pause, clr)
   begin
-    if clr = '1' then
+
+    if clr = '1' then 
       tally     <= "0000";
       bit_tally <= '0';
     elsif pause = '1' then
       tally     <= tally;
       bit_tally <= '0';
-    else
-      if tally = "0110" then
+    elsif rising_edge (clk) then
+      if tally = "0101" then
         tally     <= "0000";
         bit_tally <= '1';
-      elsif rising_edge(clk) then
+      else
         tally     <= std_logic_vector(unsigned(tally) + 1);
         bit_tally <= '0';
       end if;
@@ -39,39 +40,6 @@ begin
 
   end process;
 
-
-
-
-
-
-
-
-
-
-
-
-
-    -- process( clk , pause, clr)
-
-    -- begin
-    --   if clr = '1' then 
-    --     tally <= "0000";
-    --     bit_tally <= '0';
-    --   end if;
-
-    --   if pause = '1' then
-    --     tally <= tally;
-    --     bit_tally <= '0';
-    --   elsif rising_edge ( clk ) then
-    --     if tally = "0101" then 
-    --       tally <= "0000";
-    --       bit_tally <= '1';
-    --     else  
-    --       tally <= std_logic_vector(unsigned(tally) + 1);
-    --       bit_tally <= '0';
-    --     end if;
-    --   end if ;
-    -- end process ;
 
     bit_O <= bit_tally;
     O <= tally;

@@ -18,23 +18,26 @@ architecture Behavioral of mod10 is
 begin
   process (clk, pause, clr)
   begin
-    if clr = '1' then
+    if clr = '1' then 
+    tally     <= "0000";
+    bit_tally <= '0';
+  elsif pause = '1' then
+    tally     <= tally;
+    bit_tally <= '0';
+  elsif rising_edge (clk) then
+    if tally = "1001" then
       tally     <= "0000";
-      bit_tally <= '0';
-    elsif pause = '1' then
-      tally     <= tally;
-      bit_tally <= '0';
+      bit_tally <= '1';
     else
-      if tally = "1010" then
-        tally     <= "0000";
-        bit_tally <= '1';
-      elsif rising_edge(clk) then
-        tally     <= std_logic_vector(unsigned(tally) + 1);
-        bit_tally <= '0';
-      end if;
+      tally     <= std_logic_vector(unsigned(tally) + 1);
+      bit_tally <= '0';
     end if;
-  end process;
-  O     <= tally;
+  end if;
+
+end process;
+
+
   bit_O <= bit_tally;
+  O <= tally;
 
 end Behavioral;

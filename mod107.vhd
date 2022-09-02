@@ -20,7 +20,7 @@ begin
 
   begin
 
-    if clr = '1' then
+    if clr = '1' then 
       tally     <= 0;
       bit_tally <= '0';
     elsif pause = '1' then
@@ -37,7 +37,7 @@ begin
     end if;
 
   end process;
-
+  -- S <= tally;
   bit_O <= bit_tally;
 
 end Behavioral;
