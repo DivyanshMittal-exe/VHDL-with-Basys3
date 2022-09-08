@@ -17,7 +17,7 @@ entity rom_mem is
     re : in std_logic;
     dout : out std_logic_vector((data_width-1) downto 0)
   );
-end mac;
+end rom_mem;
 
 architecture behavioral of rom_mem is
   type mem_type is array(0 to (image_size-1)) of std_logic_vector((data_width-1) downto 0);
