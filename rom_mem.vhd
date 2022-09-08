@@ -5,21 +5,22 @@ use std.textio.all;
 
 entity rom_mem is
   generic(
-    addr_width : integer := 10;
+    addr_width : integer := 17;
     data_width : integer := 8;
-    image_size : integer := 784;
+    -- 784 + 1017770 is the size
+    image_size : integer := 102554;
     image_file_name : string := "imgdata.mif"
   );
   port(
-    addr : in std_logic_vector(16 downto 0);
+    addr : in std_logic_vector((addr_width-1) downto 0);
     clk : in std_logic;
     re : in std_logic;
-    dout : out std_logic_vector(7 downto 0)
+    dout : out std_logic_vector((data_width-1) downto 0)
   );
 end mac;
 
 architecture behavioral of rom_mem is
-  type mem_type is array(0 to image_size) of std_logic_vector((data_width-1) downto 0);
+  type mem_type is array(0 to (image_size-1)) of std_logic_vector((data_width-1) downto 0);
 
   impure function init_mem(mif_file_name : in string) return mem_type is
     file mif_file : text open read_mode is mif_file_name;
@@ -36,7 +37,16 @@ architecture behavioral of rom_mem is
   end function;
 
   signal rom_block : mem_type := init_mem(image_file_name);
-
 begin
+  process(clk, addr, re)
+  begin
+    if(rising_edge(clk)) then
+      if(re = '1') then
+        dout <= rom_block(unsigned(addr));
+      else
+        dout <= "00000000";
+      end if;
+    end if;
+  end process;
 
-end behavioural;
+end behavioral;
