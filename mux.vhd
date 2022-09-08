@@ -2,32 +2,25 @@ library IEEE;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-
-
 entity mux is
-  Port ( 
-    A: in STD_LOGIC_VECTOR(3 downto 0);
-    B: in STD_LOGIC_VECTOR(3 downto 0);
-    C: in STD_LOGIC_VECTOR(3 downto 0);
-    D: in STD_LOGIC_VECTOR(3 downto 0);
-    S : in STD_LOGIC_VECTOR(1 downto 0) ;
-    O: out STD_LOGIC_VECTOR(3 downto 0)
+  port (
+    A : in integer;
+    B : in integer;
+    C : in integer;
+    D : in integer;
+    S : in std_logic_vector(1 downto 0);
+    O : out std_logic_vector(3 downto 0)
   );
 end mux;
 
 architecture Behavioral of mux is
-  signal rev: std_logic_vector(3 downto 0) ;
+  signal O_int : integer:= 0;
 begin
 
-    rev <= A when S = "00" else
-         B when S = "01" else
-         C when S = "10" else
-         D;
-
-    O(3) <= rev(0);
-    O(2) <= rev(1);
-    O(1) <= rev(2);
-    O(0) <= rev(3);
-
+  O_int <= A when S = "00" else
+                B when S = "01" else
+                C when S = "10" else
+                D;
+  O <= std_logic_vector(to_unsigned(O_int,4));
 
 end Behavioral;
