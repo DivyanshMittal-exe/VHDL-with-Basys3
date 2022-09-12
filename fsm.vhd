@@ -1,3 +1,6 @@
+
+-- This is just a template file for FSM for now. Will implement in assignment part 2. If this submission is for assignment part 2, I have implemented it, just forgot to remove this comment
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
