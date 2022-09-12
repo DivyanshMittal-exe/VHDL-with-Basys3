@@ -5,10 +5,10 @@ use std.textio.all;
 
 entity rom_mem is
   generic(
-    addr_width : integer := 17;
+    addr_width : integer := 16;
     data_width : integer := 8;
-    -- 784 + 1017770 is the size
-    image_size : integer := 102554;
+    -- 1024(784 used only) + 50816 + 74 is the size
+    image_size : integer := 51914;
     image_file_name : string := "imgdata.mif"
   );
   port(
