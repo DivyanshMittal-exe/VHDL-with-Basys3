@@ -5,7 +5,7 @@ use std.textio.all;
 
 entity relu is
   generic(
-    inp_width : integer := 8;
+    inp_width : integer := 16
   );
   port(
     inp : in std_logic_vector((inp_width-1) downto 0);
@@ -14,10 +14,11 @@ entity relu is
 end relu;
 
 architecture behavioral of relu is
+  begin
 
-    comparator : process( inp )
+    comparator_process : process( inp )
     begin
-        if inp >= 0 then
+        if signed(inp) > 0 then
             outp <= inp;
         else
             outp <= std_logic_vector(to_unsigned(0, inp_width));
