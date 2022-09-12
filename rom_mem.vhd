@@ -6,7 +6,7 @@ use std.textio.all;
 entity rom_mem is
   generic(
     addr_width : integer := 16;
-    data_width : integer := 8;
+    data_width : integer := 16;
     -- 1024(784 used only) + 50816 + 74 is the size
     image_size : integer := 51914;
     image_file_name : string := "imgdata.mif"
@@ -44,7 +44,7 @@ begin
       if(re = '1') then
         dout <= rom_block(unsigned(addr));
       else
-        dout <= "00000000";
+        dout <= (others => '0');
       end if;
     end if;
   end process;
