@@ -21,9 +21,9 @@ begin
       if rising_edge(clk) then
         mult <= std_logic_vector(signed(din1)*signed(din2),24);
         if(cntrl = '1') then
-          accum <= mult
+          accum <= mult;
         else
-          accum <= std_logic_vector(signed(accum)+signed(mult),24)(15 downto 0);
+          accum <= std_logic_vector(signed(accum)+signed(mult))(1);
         end if;
       end if;
     end process;
