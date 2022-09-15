@@ -42,10 +42,12 @@ begin
   begin
     if(rising_edge(clk)) then
       if(re = '1') then
-        dout <= rom_block(unsigned(addr));
+        dout <= rom_block(to_integer(unsigned(addr)));
       else
-        dout <= (others => '0');
+        dout <= dout;
       end if;
+    else
+      dout <= dout;
     end if;
   end process;
 

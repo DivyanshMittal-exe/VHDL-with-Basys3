@@ -4,19 +4,19 @@ use ieee.numeric_std.all;
 
 entity Reg is
     generic(
-        data_width : integer : = 16
+        data_width : integer := 16
     );
     port (
         clk   : in std_logic;
         we    : in std_logic;
         din : in std_logic_vector((data_width-1) downto 0) ;
-        dout : in std_logic_vector((data_width-1) downto 0) 
+        dout : out std_logic_vector((data_width-1) downto 0) 
     );
 
 end Reg;
 
 architecture reg_arch of Reg is
-    signal store : std_logic_vector(7 downto 0):= "0000000" ;
+    signal store : std_logic_vector((data_width-1) downto 0):= (others=>'0') ;
 begin
     dout <= store;
     process (clk)
@@ -26,6 +26,6 @@ begin
                 store <= din;
             end if;
         end if;
-    end process; -- 
+    end process; 
 
-end reg_arch; -- reg_arch
+end reg_arch;

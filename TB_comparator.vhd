@@ -12,16 +12,16 @@ architecture behavior of TB is
           inp_width : integer := 16
         );
         port(
-          inp : in std_logic_vector((inp_width-1) downto 0);
-          outp : out std_logic_vector((inp_width-1) downto 0)
+          inp : in signed((inp_width-1) downto 0);
+          outp : out signed((inp_width-1) downto 0)
         );
       end component;
 
 
 
     -- signal addr : std_logic_vector(15 downto 0);
-    signal din    : std_logic_vector(15 downto 0) := x"0000";
-    signal dout    : std_logic_vector(15 downto 0);
+    signal din    : signed(15 downto 0) := (others=>'0');
+    signal dout    : signed(15 downto 0);
 begin
     uut : relu 
     generic map(
@@ -37,16 +37,16 @@ begin
     testing : process
     begin
         
-        din <= std_logic_vector( to_signed( -69, 16));
+        din <= to_signed( -69, 16);
 
 
         wait for 10 ns;
 
-        din <= std_logic_vector( to_signed( 69, 16));
+        din <= to_signed( 69, 16);
 
         wait for 10 ns;
 
-        din <= std_logic_vector( to_signed( -69, 16));
+        din <= to_signed( -69, 16);
 
         wait for 10 ns;
 
