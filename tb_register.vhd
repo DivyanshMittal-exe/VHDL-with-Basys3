@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity tb is
-end tb;
+entity TB_Reg is
+end TB_Reg;
 
-architecture beh of tb is
+architecture beh of TB_Reg is
     component reg
         generic(
             data_width : integer := 16

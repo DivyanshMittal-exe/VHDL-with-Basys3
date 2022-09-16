@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity tb is
-end tb;
+entity TB_Shift is
+end TB_Shift;
 
-architecture beh of tb is
+architecture beh of TB_Shift is
     component shifter
         port(
             clk   : in std_logic;

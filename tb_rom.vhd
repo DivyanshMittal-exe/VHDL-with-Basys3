@@ -2,43 +2,43 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity TB_Ram is
-end TB_Ram;
+entity TB_Rom is
+end TB_Rom;
 
-architecture behavior of TB_Ram is
+architecture behavior of TB_Rom is
 
-    component data_mem
-        generic (
-            addr_width : integer := 16;
-            data_width : integer := 16
-
-        );
-        port (
-            clk : in std_logic;
-            we    : in std_logic;
-            re : in std_logic;
-            addr : in std_logic_vector(15 downto 0);
-            din    : in std_logic_vector(15 downto 0);
-            dout    : out std_logic_vector(15 downto 0)
-
-        );
+    component rom_mem
+         generic(
+        addr_width : integer := 16;
+        data_width : integer := 16;
+        -- 1024(784 used only) + 50816 + 74 is the size
+        image_size : integer := 51914;
+        image_file_name : string := "weights_bias.mif"
+      );
+      port(
+        addr : in std_logic_vector((addr_width-1) downto 0);
+        clk : in std_logic;
+        re : in std_logic;
+        dout : out std_logic_vector((data_width-1) downto 0)
+      );
     end component;
     signal clk : std_logic := '0';
-    signal we : std_logic := '0';
     signal re : std_logic := '0';
 
     signal addr : std_logic_vector(15 downto 0) := x"0000";
-    signal din    : std_logic_vector(15 downto 0) := x"0000";
     signal dout    : std_logic_vector(15 downto 0) := x"0000";
 begin
-    uut : data_mem 
+    uut : rom_mem 
     generic map(
-        addr_width => 16,
-        data_width => 16
+        addr_width =>  16,
+        data_width => 16,
+        -- 1024(784 used only) + 50816 + 74 is the size
+        image_size => 51914,
+        image_file_name => "weights_bias.mif"
     )
     port map(
 
-        clk,we,re,addr,din,dout
+        addr,clk,re,dout
     );
 
     -- reset <= '0' after 2 ns;
@@ -47,30 +47,22 @@ begin
     begin
         
         addr <= x"0001";
-        din <= x"0069";
-        we <= '1';
         re <= '1';
 
         wait for 10 ns;
 
-        addr <= x"0002";
-        din <= x"0069";
-        we <= '0';
-        re <= '1';
-
-        wait for 10 ns;
-
-        addr <= x"0002";
-        din <= x"0069";
-        we <= '1';
+        addr <= x"0001";
         re <= '0';
 
-
         wait for 10 ns;
 
         addr <= x"0002";
-        din <= x"0069";
-        we <= '1';
+        re <= '1';
+
+
+        wait for 10 ns;
+
+        addr <= x"0003";
         re <= '1';
 
 

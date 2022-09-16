@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity tb is
-end tb;
+entity TB_Mac is
+end TB_Mac;
 
-architecture beh of tb is
+architecture beh of TB_Mac is
 
     component mac
         port(
