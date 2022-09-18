@@ -9,11 +9,11 @@ architecture behavior of TB_Rom is
 
     component rom_mem
          generic(
-        addr_width : integer := 16;
-        data_width : integer := 16;
-        -- 1024(784 used only) + 50816 + 74 is the size
-        image_size : integer := 51914;
-        image_file_name : string := "weights_bias.mif"
+            addr_width : integer := 16;
+            data_width : integer := 16;
+            -- 1024(784 used only) + 50816 + 74 is the size
+            image_size : integer := 51914;
+            image_file_name : string := "imgdata.mif"
       );
       port(
         addr : in std_logic_vector((addr_width-1) downto 0);
@@ -26,15 +26,15 @@ architecture behavior of TB_Rom is
     signal re : std_logic := '0';
 
     signal addr : std_logic_vector(15 downto 0) := x"0000";
-    signal dout    : std_logic_vector(15 downto 0) := x"0000";
+    signal dout    : std_logic_vector(7 downto 0) := x"00";
 begin
     uut : rom_mem 
     generic map(
         addr_width =>  16,
-        data_width => 16,
+        data_width => 8,
         -- 1024(784 used only) + 50816 + 74 is the size
-        image_size => 51914,
-        image_file_name => "weights_bias.mif"
+        image_size => 784 ,
+        image_file_name => "imgdata_digit7.mif"
     )
     port map(
 
@@ -46,23 +46,23 @@ begin
     testing : process
     begin
         
-        addr <= x"0001";
+        addr <= x"00CA";
         re <= '1';
 
         wait for 10 ns;
 
-        addr <= x"0001";
+        addr <= x"00CA";
         re <= '0';
 
         wait for 10 ns;
 
-        addr <= x"0002";
+        addr <= x"00CB";
         re <= '1';
 
 
         wait for 10 ns;
 
-        addr <= x"0003";
+        addr <= x"00CC";
         re <= '1';
 
 
