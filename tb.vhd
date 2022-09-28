@@ -34,13 +34,13 @@ begin
     begin
 
         clk <= '0';
-        wait for 1 ns;
+        wait for 1 ps;
 
         identifier : for i in 0 to 100000 loop
             clk <= '1';
-            wait for 5 ns;
+            wait for 1 ps;
             clk <= '0';
-            wait for 5 ns;
+            wait for 1 ps;
         end loop; -- identifier loop
         wait;
     end process clk_gen;

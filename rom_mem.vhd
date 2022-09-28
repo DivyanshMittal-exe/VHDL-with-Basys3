@@ -1,3 +1,4 @@
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -21,7 +22,7 @@ end rom_mem;
 architecture behavioral of rom_mem is
   signal zero_signal : std_logic_vector((data_width - 1) downto 0) := (others => '0');
 
-  TYPE mem_type IS ARRAY(0 TO IMAGE_SIZE) OF std_logic_vector(DATA_WIDTH-1 DOWNTO 0);
+  TYPE mem_type IS ARRAY(0 TO IMAGE_SIZE-1) OF std_logic_vector(DATA_WIDTH-1 DOWNTO 0);
     impure function init_mem(mif_file_name : in string) return mem_type is
         file mif_file : text open read_mode is mif_file_name;
         variable mif_line : line;
@@ -29,9 +30,13 @@ architecture behavioral of rom_mem is
         variable temp_mem : mem_type;
         begin
         for i in mem_type'range loop
+         if(not endfile(mif_file)) then
             readline(mif_file, mif_line);
             read(mif_line, temp_bv);
             temp_mem(i) := to_stdlogicvector(temp_bv);
+           else 
+            exit;
+            end if;
         end loop;
         return temp_mem;
     end function;   
