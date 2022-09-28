@@ -32,8 +32,8 @@ architecture behaviour of FSM is
     signal l2_index_i     : integer    := 0;
     signal l2_index_j     : integer    := 0;
     signal fsm_mover      : std_logic  := '1';
-
-    signal ten_max_index  : integer    := 0;
+    
+    signal ten_max_index  : integer    := 11;
 
 begin
     process (clk, next_state)
@@ -86,6 +86,7 @@ begin
                     img_ram_we   <= '1';
 
                 when layer_1_bookkeep =>
+                        report("Bookkeeping l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i) );
 
                     if l1_index_j >= 63 then
                         next_state <= layer_2_bookkeep;
@@ -100,8 +101,8 @@ begin
                     mac_controler <= '1';
 
                 when multiply_l1 =>
-                    report("Multiplying");
-                    if l1_index_i >= 784 then
+                    report("Multiplying l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i) );
+                    if l1_index_i >= 783 then
                         next_state     <= layer_1_bookkeep;
                         rom_addr       <= 1024 + 50816 + l1_index_j;
                         rom_re         <= '1';
@@ -120,7 +121,9 @@ begin
                     mac_mux      <= '0';
 
                 when layer_2_bookkeep =>
-                    if l2_index_j >= 10 then
+                           report("Bookkeeping l2 " & integer'image(l2_index_j) & " " &integer'image(l2_index_i) );
+
+                    if l2_index_j >= 9 then
                         next_state    <= get_max_of_ten;
                         ten_max_index <= 0;
                     else
@@ -132,9 +135,11 @@ begin
                     mac_controler <= '1';
 
                 when multiply_l2 =>
+                      report("Multiplying l2 " & integer'image(l2_index_j) & " " &integer'image(l2_index_i) );
+
                     if l2_index_i >= 64 then
                         next_state     <= layer_2_bookkeep;
-                        rom_addr       <= 50880 + 64 + l1_index_j;
+                        rom_addr       <= 50880 + 64 + l2_index_j;
                         rom_re         <= '1';
                         layer_ram_addr <= l2_index_j + 64;
                         layer_ram_we   <= '1';
@@ -152,7 +157,7 @@ begin
                     mac_mux        <= '1';
 
                 when get_max_of_ten =>
-                    if ten_max_index >= 10 then
+                    if ten_max_index >= 9 then
                         next_state <= get_out;
                     else
                         ten_max_index <= ten_max_index + 1;

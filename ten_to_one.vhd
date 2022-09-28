@@ -19,7 +19,7 @@ begin
   process(clk)
     begin
       if rising_edge(clk) then
-        if value > max_val then
+        if value > max_val and index < 10 then
             max_val <= value;
             max_index_local <= index;
         end if;
