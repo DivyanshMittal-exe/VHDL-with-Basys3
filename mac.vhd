@@ -4,11 +4,11 @@ use ieee.numeric_std.all;
 
 entity mac is
   Port ( 
-    din1 : in signed(7 downto 0);
-    din2 : in signed(15 downto 0);
+    din1 : in std_logic_vector(7 downto 0);
+    din2 : in std_logic_vector(15 downto 0);
     clk : in std_logic;
     cntrl : in std_logic;
-    dout : out signed(15 downto 0)
+    dout : out std_logic_vector(15 downto 0)
   );
 end mac;
 
@@ -19,7 +19,7 @@ begin
   process(clk, cntrl, din1, din2)
     begin
       if rising_edge(clk) then
-        mult <= din1*din2;
+        mult <= signed(din1)*signed(din2);
         if(cntrl = '1') then
           accum <= mult(15 downto 0);
         else
@@ -27,5 +27,5 @@ begin
         end if;
       end if;
     end process;
-  dout <= accum;
+  dout <= std_logic_vector(accum);
 end;

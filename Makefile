@@ -1,3 +1,8 @@
+all:
+	ghdl -a comparator.vhd 7_seg_decoder.vhd fsm.vhd mac.vhd ram.vhd register.vhd rom_mem.vhd shifter.vhd ten_to_one.vhd glue.vhd tb.vhd
+	ghdl -r TB_main --wave=wave.ghw
+	gtkwave wave.ghw
+
 comp:
 	ghdl -a comparator.vhd tb_comparator.vhd
 	ghdl -r TB_Comp --wave=wave.ghw

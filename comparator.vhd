@@ -7,8 +7,8 @@ entity relu is
     inp_width : integer := 16
   );
   port(
-    inp : in signed((inp_width-1) downto 0);
-    outp : out signed((inp_width-1) downto 0)
+    inp : in std_logic_vector((inp_width-1) downto 0);
+    outp : out std_logic_vector((inp_width-1) downto 0)
   );
 end relu;
 
@@ -17,7 +17,7 @@ architecture behavioral of relu is
 
     comparator_process : process( inp )
     begin
-        if inp > 0 then
+        if signed(inp) > 0 then
             outp <= inp;
         else
             outp <= (others => '0');

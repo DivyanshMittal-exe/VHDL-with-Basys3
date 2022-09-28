@@ -23,32 +23,30 @@ architecture arch of data_mem is
         others => (others => '0')
     );
 
-    signal read_out: std_logic_vector((data_width - 1) downto 0) := (others => '0');
-    signal zero_signal: std_logic_vector((data_width - 1) downto 0) := (others => '0');
+    signal read_out    : std_logic_vector((data_width - 1) downto 0) := (others => '0');
+    signal zero_signal : std_logic_vector((data_width - 1) downto 0) := (others => '0');
 begin
 
-    read_process : process( re,clk )
+    read_process : process (re, clk)
     begin
 
         if rising_edge(clk) then
             if re = '1' then
-                read_out <=  data(to_integer(unsigned(addr)));
+                read_out <= data(to_integer(unsigned(addr)));
             else
                 read_out <= zero_signal;
             end if;
         end if;
-        
-    end process ; -- read_process
 
-    
-    dout <=read_out;
+    end process; -- read_process
+    dout <= read_out;
 
     write : process (clk)
     begin
-     if rising_edge(clk) then
-        if we = '1' then
+        if rising_edge(clk) then
+            if we = '1' then
                 data(to_integer(unsigned(addr))) <= din;
-          end if;
-      end if;
+            end if;
+        end if;
     end process;
 end arch;
