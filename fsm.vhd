@@ -105,7 +105,7 @@ begin
                     report("Multiplying l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i) );
                     if l1_index_i >= 783 then
                         next_state     <= layer_1_bookkeep;
-                        rom_addr       <= 1024 + 50816 + l1_index_j;
+                        rom_addr       <= 51200 + l1_index_j;
                         rom_re         <= '1';
                         layer_ram_addr <= l1_index_j;
                         layer_ram_we   <= '1';
@@ -140,7 +140,7 @@ begin
 
                     if l2_index_i >= 64 then
                         next_state     <= layer_2_bookkeep;
-                        rom_addr       <= 50880 + 64 + l2_index_j;
+                        rom_addr       <= 51904 + l2_index_j;
                         rom_re         <= '1';
                         layer_ram_addr <= l2_index_j + 64;
                         layer_ram_we   <= '1';
