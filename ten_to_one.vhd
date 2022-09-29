@@ -20,7 +20,7 @@ begin
     begin
       if rising_edge(clk) and index < 10 then
          report("Value and index " & integer'image(to_integer(signed(value))) & " " &integer'image(index) );
-        if value > max_val then
+        if signed(value) > signed(max_val) then
             max_val <= value;
             max_index_local <= index;
         end if;

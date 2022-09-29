@@ -98,41 +98,50 @@ begin
                     else
                         
                         next_state <= multiply_l1;
-                    end if;
+                        
 
+                        
+                    end if;
+                    layer_ram_we   <= '1';
+                    do_i_relu      <= '1';
                     l1_index_i    <= 0;
                     mac_controler <= '1';
 
                 when multiply_l1 =>
                     report("Multiplying l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i)& " "  &integer'image(1024 + l1_index_j * 784 + l1_index_i));
-                    if l1_index_i >= 783 then
+                    if l1_index_i >= 784 then
                         next_state     <= layer_1_bookkeep;
                         rom_addr       <= 51200 + l1_index_j;
                         rom_re         <= '1';
                         layer_ram_addr <= l1_index_j;
-                        layer_ram_we   <= '1';
-                        do_i_relu      <= '1';
+                        
                         l1_index_j <= l1_index_j + 1;
+                        
                     else
                         next_state <= multiply_l1;
                         l1_index_i <= l1_index_i + 1;
-                    end if;
-                    img_ram_addr <= l1_index_i;                    -- - 1;
-                    rom_addr  <= 1024 + l1_index_j * 784 + l1_index_i; -- - 1;
+                        rom_addr  <= 1024 + l1_index_j * 784 + l1_index_i; -- - 1;
+                        img_ram_addr <= l1_index_i;                    -- - 1;
 
-                    img_ram_re   <= '1';
-                    rom_re       <= '1';
-                    mac_mux      <= '0';
+                        img_ram_re   <= '1';
+                        rom_re       <= '1';
+                        mac_mux      <= '0';
+    
+
+                    end if;
 
                 when layer_2_bookkeep =>
                            report("Bookkeeping l2 " & integer'image(l2_index_j) & " " &integer'image(l2_index_i) );
 
-                    if l2_index_j >= 9 then
+                    if l2_index_j >= 10 then
                         next_state    <= get_max_of_ten;
                         ten_max_index_local <= 0;
                     else
                         next_state <= multiply_l2;
+                        
                     end if;
+                    layer_ram_we   <= '1';
+                    do_i_relu      <= '0';
 
                     l2_index_i    <= 0;
                     mac_controler <= '1';
@@ -145,17 +154,17 @@ begin
                         rom_addr       <= 51904 + l2_index_j;
                         rom_re         <= '1';
                         layer_ram_addr <= l2_index_j + 64;
-                        layer_ram_we   <= '1';
-                        do_i_relu      <= '0';
+
                         l2_index_j <= l2_index_j + 1;
 
                     else
                         next_state <= multiply_l2;
                         l2_index_i <= l2_index_i + 1;
+                        rom_addr    <= 51264 + l2_index_j * 64 + l2_index_i; -- - 1;
+                        layer_ram_addr <= l2_index_i;
                     end if;
 
-                    layer_ram_addr <= l2_index_i;                           -- - 1;
-                    rom_addr    <= 51264 + l2_index_j * 64 + l2_index_i; -- - 1;
+                                               -- - 1;
 
                     layer_ram_re   <= '1';
                     rom_re      <= '1';
@@ -168,7 +177,7 @@ begin
                         ten_max_index_local <= ten_max_index_local + 1;
                     end if;
 
-                    ten_max_index <= ten_max_index_local;      -- - 1;  
+                    ten_max_index <= ten_max_index_local-1;      -- - 1;  
                     layer_ram_addr   <= ten_max_index_local + 64; --  + 63;
                     layer_ram_re     <= '1';
                 when get_out =>

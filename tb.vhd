@@ -36,11 +36,11 @@ begin
         clk <= '0';
         wait for 1 ps;
 
-        identifier : for i in 0 to 10846 loop
+        identifier : for i in 0 to 80846 loop
             clk <= '1';
-            wait for 10 ps;
+            wait for 1 ps;
             clk <= '0';
-            wait for 10 ps;
+            wait for 1 ps;
         end loop; -- identifier loop
         wait;
     end process clk_gen;

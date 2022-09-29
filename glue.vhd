@@ -205,7 +205,7 @@ begin
         dout  => mac_out
     );
 
-    relu_inp <= std_logic_vector(signed(rom_out) + signed(mac_out));
+    relu_inp <= std_logic_vector(signed(rom_out) + signed(shifted_out));
 
     relu_mapper : relu
     generic map(
@@ -218,13 +218,13 @@ begin
 
     shifter_mapper : shifter
     port map(
-        inp  => relu_out,
+        inp  => mac_out,
         outp => shifted_out
     );
 
     
-    do_i_relu_out <= shifted_out when do_i_relu = '1' else
-        std_logic_vector(signed(rom_out) + signed(mac_out));
+    do_i_relu_out <= relu_out when do_i_relu = '1' else
+        std_logic_vector(signed(rom_out) + signed(shifted_out));
 
     layer_ram_mapper : data_mem
     generic map(
