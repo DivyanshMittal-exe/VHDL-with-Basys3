@@ -38,7 +38,8 @@ architecture Behavioral of glue is
     component data_mem
         generic (
             addr_width : integer := 16;
-            data_width : integer := 16
+            data_width : integer := 16;
+            ram_size: integer := 784
 
         );
         port (
@@ -180,7 +181,8 @@ begin
     img_data_mapper : data_mem
     generic map(
         addr_width => 16,
-        data_width => 8
+        data_width => 8,
+        ram_size => 784
     )
     port map(
         clk  => clk,
@@ -227,7 +229,9 @@ begin
     layer_ram_mapper : data_mem
     generic map(
         addr_width => 16,
-        data_width => 16
+        data_width => 16,
+        ram_size => 74
+
 
     )
     port map(

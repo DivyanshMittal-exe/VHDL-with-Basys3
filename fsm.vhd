@@ -55,10 +55,10 @@ begin
     begin
         rom_re    <= '0';
         img_ram_we    <= '0';
-        img_ram_re    <= '0';
+        img_ram_re    <= '1';
         mac_controler <= '0';
         layer_ram_we  <= '0';
-        layer_ram_re  <= '0';
+        layer_ram_re  <= '1';
         mac_mux       <= '0';
         do_i_relu     <= '0';
         ten_max_index <= 11;
@@ -72,29 +72,31 @@ begin
                        report "The value of 'a' is " & integer'image(ram_pull_index);
 
                     if ram_pull_index >= 783 then
-                                         report("Starting image load");
+                        report("Starting image load");
 
                         next_state <= layer_1_bookkeep;
                         l1_index_j <= 0;
+                        l1_index_i <= 0;
+
                     else
                         next_state     <= load_img_in_ram;
                         ram_pull_index <= ram_pull_index + 1;
                     end if;
 
-                    img_ram_addr <= ram_pull_index; -- - 1;
+                    img_ram_addr <= ram_pull_index - 1; -- - 1;
                     rom_addr <= ram_pull_index; -- - 1;
                     rom_re   <= '1';
                     img_ram_we   <= '1';
 
                 when layer_1_bookkeep =>
-                        report("Bookkeeping l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i) );
+                    report("Bookkeeping l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i) );
 
                     if l1_index_j >= 63 then
                         next_state <= layer_2_bookkeep;
                         l2_index_i <= 0;
                         l2_index_j <= 0;
                     else
-                        l1_index_j <= l1_index_j + 1;
+                        
                         next_state <= multiply_l1;
                     end if;
 
@@ -102,7 +104,7 @@ begin
                     mac_controler <= '1';
 
                 when multiply_l1 =>
-                    report("Multiplying l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i) );
+                    report("Multiplying l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i)& " "  &integer'image(1024 + l1_index_j * 784 + l1_index_i));
                     if l1_index_i >= 783 then
                         next_state     <= layer_1_bookkeep;
                         rom_addr       <= 51200 + l1_index_j;
@@ -110,6 +112,7 @@ begin
                         layer_ram_addr <= l1_index_j;
                         layer_ram_we   <= '1';
                         do_i_relu      <= '1';
+                        l1_index_j <= l1_index_j + 1;
                     else
                         next_state <= multiply_l1;
                         l1_index_i <= l1_index_i + 1;
@@ -118,7 +121,7 @@ begin
                     rom_addr  <= 1024 + l1_index_j * 784 + l1_index_i; -- - 1;
 
                     img_ram_re   <= '1';
-                    rom_re    <= '1';
+                    rom_re       <= '1';
                     mac_mux      <= '0';
 
                 when layer_2_bookkeep =>
@@ -128,7 +131,6 @@ begin
                         next_state    <= get_max_of_ten;
                         ten_max_index_local <= 0;
                     else
-                        l2_index_j <= l2_index_j + 1;
                         next_state <= multiply_l2;
                     end if;
 
@@ -145,6 +147,8 @@ begin
                         layer_ram_addr <= l2_index_j + 64;
                         layer_ram_we   <= '1';
                         do_i_relu      <= '0';
+                        l2_index_j <= l2_index_j + 1;
+
                     else
                         next_state <= multiply_l2;
                         l2_index_i <= l2_index_i + 1;
