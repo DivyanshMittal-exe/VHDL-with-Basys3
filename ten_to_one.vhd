@@ -18,8 +18,9 @@ architecture behavioral of ten_to_one is
 begin
   process(clk)
     begin
-      if rising_edge(clk) then
-        if value > max_val and index < 10 then
+      if rising_edge(clk) and index < 10 then
+         report("Value and index " & integer'image(to_integer(signed(value))) & " " &integer'image(index) );
+        if value > max_val then
             max_val <= value;
             max_index_local <= index;
         end if;

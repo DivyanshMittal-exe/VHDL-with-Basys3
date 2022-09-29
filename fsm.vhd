@@ -34,6 +34,7 @@ architecture behaviour of FSM is
     signal fsm_mover      : std_logic  := '1';
     
     signal ten_max_index  : integer    := 11;
+    signal ten_max_index_local  : integer    := 11;
 
 begin
     process (clk, next_state)
@@ -60,7 +61,7 @@ begin
         layer_ram_re  <= '0';
         mac_mux       <= '0';
         do_i_relu     <= '0';
-
+        ten_max_index <= 11;
 
             case current_state is
                 when start =>
@@ -125,7 +126,7 @@ begin
 
                     if l2_index_j >= 9 then
                         next_state    <= get_max_of_ten;
-                        ten_max_index <= 0;
+                        ten_max_index_local <= 0;
                     else
                         l2_index_j <= l2_index_j + 1;
                         next_state <= multiply_l2;
@@ -157,14 +158,14 @@ begin
                     mac_mux        <= '1';
 
                 when get_max_of_ten =>
-                    if ten_max_index >= 9 then
+                    if ten_max_index_local >= 9 then
                         next_state <= get_out;
                     else
-                        ten_max_index <= ten_max_index + 1;
+                        ten_max_index_local <= ten_max_index_local + 1;
                     end if;
 
-                    ten_to_one_index <= ten_max_index;      -- - 1;  
-                    layer_ram_addr   <= ten_max_index + 64; --  + 63;
+                    ten_max_index <= ten_max_index_local;      -- - 1;  
+                    layer_ram_addr   <= ten_max_index_local + 64; --  + 63;
                     layer_ram_re     <= '1';
                 when get_out =>
                     next_state <= get_out;
@@ -174,4 +175,7 @@ begin
             end case;
 
     end process;
+    
+    ten_to_one_index <= ten_max_index;
+    
 end behaviour;
