@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity glue is
     generic (
-        file_name : string :="imgdata.mif"
+        file_name : string :="file.mif"
         );
     port (
         clk : in std_logic;
@@ -26,7 +26,7 @@ architecture Behavioral of glue is
             addr_width      : integer := 16;
             data_width      : integer := 16;
             -- 1024(784 used only) + 50816 + 74 is the size
-            image_size      : integer := 784;
+            image_size      : integer := 51914;
             image_file_name : string  := file_name
         );
 

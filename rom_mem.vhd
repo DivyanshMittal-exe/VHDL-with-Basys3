@@ -9,7 +9,7 @@ entity rom_mem is
     ADDR_WIDTH : integer := 10;
     DATA_WIDTH : integer := 8;
     IMAGE_SIZE : integer := 784;
-    IMAGE_FILE_NAME : string :="imgdata.mif"
+    IMAGE_FILE_NAME : string :="file.mif"
     );
   port (
     addr : in std_logic_vector((ADDR_WIDTH - 1) downto 0);
