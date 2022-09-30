@@ -1,15 +1,16 @@
 import numpy as np
 
-f = open("file.mif","r")
+f = open("MNIST/MIF/9.mif","r")
 
 data = f.readlines()
-w1 = np.array(data[1024:1024+784*64])
-b1 = np.array(data[1024+784*64:1024+784*64+64])
+# w1 = np.array(data[1024:1024+784*64])
+# b1 = np.array(data[1024+784*64:1024+784*64+64])
 # print(b1)
 for i in range(len(data)):
     data[i] = int(data[i],2)
-    if(data[i]>=128):
-        data[i] = data[i] - 256
+    if(i>1023):
+        if(data[i]>=128):
+            data[i] = data[i] - 256
 
 image = np.array(data[:784])
 w1 = np.array(data[1024:1024+784*64])
@@ -30,15 +31,24 @@ for i in range(64):
     accum = 0
     for j in range(784):
         accum += image[j]*w1[j][i]
-        accum = accum%(2**(16))
+        accumb = "{0:024b}".format(accum)
+        if(accumb[0]== "-"):
+            accumb = "1"+accumb[1:]
+            n = int(accumb,2)
+            n = 2**24-n
+            accumb = "1"+"{0:023b}".format(n)
+        accumb = accumb[0]+accumb[9:]
+        accum = int(accumb,2)
+        
+        # accum = accum%(2**(16))
         if(accum>=2**15):
             accum = accum-2**16
-        if(i == 3  ):
-            print(f"{j} {accum} {w1[j][i]} {image[j]}")
+        # if(i == 3  ):
+        #     print(f"{j} {accum} {w1[j][i]} {image[j]}")
     output1[i] = accum
 
 # print(output1)
-print(b1)
+# print(b1)
 
 for i in range(len(output1)):
     output1[i] = b1[i] + output1[i]//32
@@ -54,9 +64,19 @@ for i in range(10):
     accum = 0
     for j in range(64):
         accum += output1[j]*w2[j][i]
-        accum = accum%(2**(16))
+        accumb = "{0:024b}".format(accum)
+        if(accumb[0]== "-"):
+            accumb = "1"+accumb[1:]
+            n = int(accumb,2)
+            n = 2**24-n
+            accumb = "1"+"{0:023b}".format(n)
+        accumb = accumb[0]+accumb[9:]
+        accum = int(accumb,2)
         if(accum>=2**15):
-            accum = accum-2**16
+            accum = accum - 2**16
+        # accum = accum%(2**(16))
+        # if(accum>=2**15):
+        #     accum = accum-2**16
     output2[i] = accum
 
 for i in range(len(output2)):
