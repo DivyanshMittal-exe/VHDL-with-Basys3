@@ -32,7 +32,7 @@ begin
     begin
 
         if rising_edge(clk) then
-            if re = '1' and to_integer(signed(addr)) >= 0 then
+            if re = '1' and to_integer(signed(addr)) >= 0 and to_integer(signed(addr)) < ram_size then
                 read_out <= data(to_integer(unsigned(addr)));
             else
                 read_out <= zero_signal;
@@ -45,7 +45,7 @@ begin
     write : process (clk)
     begin
         if rising_edge(clk) then
-            if we = '1' and to_integer(signed(addr)) >=0 then
+            if we = '1' and to_integer(signed(addr)) >=0 and to_integer(signed(addr)) < ram_size  then
                 report("Data at locn "& integer'image(to_integer(unsigned(addr))) & " is " &integer'image(to_integer(unsigned(din))));
                 data(to_integer(unsigned(addr))) <= din;
             end if;

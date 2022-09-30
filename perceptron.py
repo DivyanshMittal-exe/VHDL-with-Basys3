@@ -1,6 +1,7 @@
 import numpy as np
 
-f = open("MNIST/MIF/9.mif","r")
+f = open("file_1.mif","r")
+
 
 data = f.readlines()
 # w1 = np.array(data[1024:1024+784*64])
@@ -59,6 +60,12 @@ output1 = [0 if x < 0 else x for x in output1]
 output2 = [0 for _ in range(10)]
 
 print(output1)
+
+def twos(val_str, bytes):
+    import sys
+    val = int(val_str, 2)
+    b = val.to_bytes(bytes, byteorder=sys.byteorder, signed=False)                                                          
+    return int.from_bytes(b, byteorder=sys.byteorder, signed=True)
 
 for i in range(10):
     accum = 0

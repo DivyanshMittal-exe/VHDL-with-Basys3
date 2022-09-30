@@ -25,7 +25,7 @@ architecture behavior of TB_main is
 begin
     uut : glue 
     generic map(
-        file_name => "file_7.mif"
+        file_name => "file_9.mif"
     )
     port map(
         clk => clk,
@@ -46,6 +46,11 @@ begin
             wait for 1 ps;
             clk <= '0';
             wait for 1 ps;
+            
+            clk <= '1';
+            wait for 1 ps;
+            clk <= '0';
+            wait for 1 ps; 
         end loop; -- identifier loop
         wait;
     end process clk_gen;

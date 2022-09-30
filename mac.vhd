@@ -13,21 +13,27 @@ entity mac is
 end mac;
 
 architecture behavioral of mac is
-  signal accum : signed(15 downto 0) := (others => '0');
-  signal mult : signed(23 downto 0) := (others => '0');
+   signal accum_signal : signed(15  downto 0) := (others => '0');
 begin
   process(clk, cntrl, din1, din2)
+    variable accum : signed(23  downto 0) := (others => '0');
+    variable mult : signed(23 downto 0) := (others => '0');
     begin
       if rising_edge(clk) then
-        mult <= signed(din1)*signed(din2);
+        mult := signed(din1)*signed(din2);
         report("Accum is " & integer'image(to_integer(accum)) & " " &  integer'image(to_integer(signed(din1)))& " " &  integer'image(to_integer(signed(din2))) );
         if(cntrl = '1') then
-          accum <= "0000000000000000";
+          accum := "000000000000000000000000";
         else
-          accum <= accum+mult(15 downto 0);
+          accum := accum + mult ;
+          if accum < 0 then 
+            accum := "111111111" & accum(14 downto 0);
+           else
+             accum := "000000000" & accum(14 downto 0);  
+           end if;
         end if;
-        
+        accum_signal <= accum(15 downto 0);
       end if;
     end process;
-  dout <= std_logic_vector(accum);
+  dout <= std_logic_vector(accum_signal);
 end;
