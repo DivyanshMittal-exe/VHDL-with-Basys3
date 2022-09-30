@@ -21,7 +21,7 @@ begin
     begin
       if rising_edge(clk) then
         mult := signed(din1)*signed(din2);
-        report("Accum is " & integer'image(to_integer(accum)) & " " &  integer'image(to_integer(signed(din1)))& " " &  integer'image(to_integer(signed(din2))) );
+--        report("Accum is " & integer'image(to_integer(accum)) & " " &  integer'image(to_integer(signed(din1)))& " " &  integer'image(to_integer(signed(din2))) );
         if(cntrl = '1') then
           accum := "000000000000000000000000";
         else
