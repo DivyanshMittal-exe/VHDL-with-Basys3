@@ -171,7 +171,7 @@ begin
                     mac_mux        <= '1';
 
                 when get_max_of_ten =>
-                    if ten_max_index_local >= 9 then
+                    if ten_max_index_local >=  10 then
                         next_state <= get_out;
                     else
                         ten_max_index_local <= ten_max_index_local + 1;

@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity glue is
     generic (
-        file_name : string :="file.mif"
+        file_name : string :="file_4.mif"
         );
     port (
         clk : in std_logic;
