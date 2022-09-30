@@ -5,18 +5,12 @@ entity FSM is
     port (
         clk              : in std_logic;
         rom_addr     : out integer := 0;
-        img_ram_addr     : out integer := 0;
+        ram_addr     : out integer := 0;
         rom_re       : out std_logic;
-        img_ram_we       : out std_logic;
-        img_ram_re       : out std_logic;
+        ram_we       : out std_logic;
+        ram_re       : out std_logic;
         mac_controler    : out std_logic;
-        layer_ram_addr   : out integer;
-        layer_ram_we     : out std_logic;
-        layer_ram_re     : out std_logic;
-
-        mac_mux          : out std_logic;
-
-        do_i_relu        : out std_logic;
+        ram_mux          : out std_logic_vector(1 downto 0);
         ten_to_one_index : out integer
     );
 end FSM;
@@ -54,13 +48,10 @@ begin
     process (current_state, fsm_mover)
     begin
         rom_re    <= '0';
-        img_ram_we    <= '0';
-        img_ram_re    <= '1';
+        ram_we    <= '0';
+        ram_re    <= '1';
         mac_controler <= '0';
-        layer_ram_we  <= '0';
-        layer_ram_re  <= '1';
-        mac_mux       <= '0';
-        do_i_relu     <= '0';
+        ram_mux       <= "01";
         ten_max_index <= 11;
 
             case current_state is
@@ -83,10 +74,12 @@ begin
                         ram_pull_index <= ram_pull_index + 1;
                     end if;
 
-                    img_ram_addr <= ram_pull_index - 1; -- - 1;
+                    ram_addr <= ram_pull_index - 1; -- - 1;
                     rom_addr <= ram_pull_index; -- - 1;
                     rom_re   <= '1';
-                    img_ram_we   <= '1';
+                    ram_we   <= '1';
+
+                    ram_mux       <= "00";
 
                 when layer_1_bookkeep =>
                     report("Bookkeeping l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i) );
@@ -102,8 +95,8 @@ begin
 
                         
                     end if;
-                    layer_ram_we   <= '1';
-                    do_i_relu      <= '1';
+                    ram_we   <= '1';
+                    ram_mux       <= "01";
                     l1_index_i    <= 0;
                     mac_controler <= '1';
 
@@ -113,7 +106,7 @@ begin
                         next_state     <= layer_1_bookkeep;
                         rom_addr       <= 51200 + l1_index_j;
                         rom_re         <= '1';
-                        layer_ram_addr <= l1_index_j;
+                        ram_addr <= l1_index_j + 800;
                         
                         l1_index_j <= l1_index_j + 1;
                         
@@ -121,11 +114,11 @@ begin
                         next_state <= multiply_l1;
                         l1_index_i <= l1_index_i + 1;
                         rom_addr  <= 1024 + l1_index_j * 784 + l1_index_i; -- - 1;
-                        img_ram_addr <= l1_index_i;                    -- - 1;
+                        ram_addr <= l1_index_i;                    -- - 1;
 
-                        img_ram_re   <= '1';
+                        ram_re       <= '1';
                         rom_re       <= '1';
-                        mac_mux      <= '0';
+                        -- ram_mux      <= '0';
     
 
                     end if;
@@ -140,9 +133,8 @@ begin
                         next_state <= multiply_l2;
                         
                     end if;
-                    layer_ram_we   <= '1';
-                    do_i_relu      <= '0';
-
+                    ram_we   <= '1';
+                    ram_mux       <= "10";
                     l2_index_i    <= 0;
                     mac_controler <= '1';
 
@@ -153,7 +145,7 @@ begin
                         next_state     <= layer_2_bookkeep;
                         rom_addr       <= 51904 + l2_index_j;
                         rom_re         <= '1';
-                        layer_ram_addr <= l2_index_j + 64;
+                        ram_addr <= l2_index_j + 864;
 
                         l2_index_j <= l2_index_j + 1;
 
@@ -161,14 +153,14 @@ begin
                         next_state <= multiply_l2;
                         l2_index_i <= l2_index_i + 1;
                         rom_addr    <= 51264 + l2_index_j * 64 + l2_index_i; -- - 1;
-                        layer_ram_addr <= l2_index_i;
+                        ram_addr <= l2_index_i + 800;
                     end if;
 
                                                -- - 1;
 
-                    layer_ram_re   <= '1';
+                    ram_re   <= '1';
                     rom_re      <= '1';
-                    mac_mux        <= '1';
+                    -- ram_mux        <= '1';
 
                 when get_max_of_ten =>
                     if ten_max_index_local >=  10 then
@@ -178,8 +170,8 @@ begin
                     end if;
 
                     ten_max_index <= ten_max_index_local-1;      -- - 1;  
-                    layer_ram_addr   <= ten_max_index_local + 64; --  + 63;
-                    layer_ram_re     <= '1';
+                    ram_addr   <= ten_max_index_local + 864; --  + 63;
+                    ram_re     <= '1';
                 when get_out =>
                     next_state <= get_out;
 
