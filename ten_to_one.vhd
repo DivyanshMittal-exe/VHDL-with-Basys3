@@ -16,7 +16,7 @@ architecture behavioral of ten_to_one is
     signal max_index_local: integer:= 10;
 
 begin
-  process(clk)
+  process(clk,index)
     begin
       if rising_edge(clk) and index < 10 then
          report("Value and index " & integer'image(to_integer(signed(value))) & " " &integer'image(index) );

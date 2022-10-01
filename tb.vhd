@@ -25,7 +25,7 @@ architecture behavior of TB_main is
 begin
     uut : glue 
     generic map(
-        file_name => "file_1.mif"
+        file_name => "0.mif"
     )
     port map(
         clk => clk,
