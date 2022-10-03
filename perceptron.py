@@ -3,13 +3,12 @@ from mlxtend.data import mnist_data
 import random
 
 
-f = open("file_1.mif","r")
 
+f = open("file_7.mif","r")
 
 data = f.readlines()
-# w1 = np.array(data[1024:1024+784*64])
-# b1 = np.array(data[1024+784*64:1024+784*64+64])
-# print(b1)
+
+
 for i in range(len(data)):
     data[i] = int(data[i],2)
     if(i>1023):
@@ -19,7 +18,6 @@ for i in range(len(data)):
 image = np.array(data[:784])
 w1 = np.array(data[1024:1024+784*64])
 b1 = data[1024+784*64:1024+784*64+64]
-# print(b1)
 w2 = np.array(data[1024+784*64+64:1024+784*64+64+64*10])
 b2 = np.array(data[1024+784*64+64+64*10:])
 
@@ -30,111 +28,51 @@ w1 = np.transpose(w1)
 w2 = np.transpose(w2)
 
 
+def twos(val_str, bytes):
+    import sys
+    val = int(val_str, 2)
+    b = val.to_bytes(bytes, byteorder=sys.byteorder, signed=False)                                                          
+    return int.from_bytes(b, byteorder=sys.byteorder, signed=True)
 
-X, y = mnist_data()
 
-i_s = [i for i in range(len(X))]
 
-random.shuffle(i_s)
+output1 = [0 for _ in range(64)]
 
-sum = 0
-tot = 0
-# for image,typ in zip(X,y):
-for i_ss in i_s:
-    tot += 1
-    image = X[i_ss]
-    typ = y[i_ss]
-    image = image.flatten()
-    
-    # image = ['{0:08b}'.format(int(e)) for e in image]
-    image = [int(e) for e in image]
+for i in range(64):
+    accum = 0
+    for j in range(784):
+        accum += image[j]*w1[j][i]
+        accumb = np.binary_repr(accum,width=24)[-24:]
+        accumb = accumb[0] + accumb[-15:]         
+        accum = twos(accumb,2)
 
-    output1 = [0 for _ in range(64)]
+    output1[i] = accum
 
-    for i in range(64):
-        accum = 0
-        for j in range(784):
-            accum += image[j]*w1[j][i]
-            accumb = "{0:024b}".format(accum)
-            if(accumb[0]== "-"):
-                accumb = "1"+accumb[1:]
-                n = int(accumb,2)
-                n = 2**24-n
-                accumb = "1"+"{0:023b}".format(n)
-            accumb = accumb[0]+accumb[9:]
-            accum = int(accumb,2)
-            
-            # accum = accum%(2**(16))
-            if(accum>=2**15):
-                accum = accum-2**16
-            # if(i == 3  ):
-            #     print(f"{j} {accum} {w1[j][i]} {image[j]}")
-        output1[i] = accum
-
-    # print(output1)
-    # print(b1)
-
-    for i in range(len(output1)):
-        output1[i] = (b1[i] + output1[i])//32
-        
-        
-    output1 = [0 if x < 0 else x for x in output1]
-
-    output2 = [0 for _ in range(10)]
-
-    # print(output1)
-
-    def twos(val_str, bytes):
-        import sys
-        val = int(val_str, 2)
-        b = val.to_bytes(bytes, byteorder=sys.byteorder, signed=False)                                                          
-        return int.from_bytes(b, byteorder=sys.byteorder, signed=True)
-
-    for i in range(10):
-        accum = 0
-        for j in range(64):
-            accum += output1[j]*w2[j][i]
-            accumb = "{0:024b}".format(accum)
-            if(accumb[0]== "-"):
-                accumb = "1"+accumb[1:]
-                n = int(accumb,2)
-                n = 2**24-n
-                accumb = "1"+"{0:023b}".format(n)
-            accumb = accumb[0]+accumb[9:]
-            accum = int(accumb,2)
-            if(accum>=2**15):
-                accum = accum - 2**16
-            # accum = accum%(2**(16))
-            # if(accum>=2**15):
-            #     accum = accum-2**16
-        output2[i] = accum
-
-    for i in range(len(output2)):
-        output2[i] = (b2[i] + output2[i])//32
-        
-        
-    index_max = max(range(len(output2)), key=output2.__getitem__)
-    sum += index_max == typ
-    
-    print(sum/tot)
+for i in range(len(output1)):
+    output1[i] = (b1[i] + output1[i])//32
     
     
-print(sum/len(y))
-    # print(output2)
-    # print(b2)
-# output1 = np.array(output1)
-# output1 = output1 + b1
-# print(output1)
+output1 = [0 if x < 0 else x for x in output1]
+output2 = [0 for _ in range(10)]
 
-# output1 = (np.matmul(image,w1)+b1)
-# print(output1)
 
-# for i in range(len(output1)):
-#     if(output1[i]<0):
-#         output1[i] = 0
+for i in range(10):
+    accum = 0
+    for j in range(64):
+        
+        accum += output1[j]*w2[j][i]
+        accumb = np.binary_repr(accum,width=24)[-24:]
+        accumb = accumb[0] + accumb[-15:]
+        accum = twos(accumb,2)
 
-# # print(output1)
+    output2[i] = accum
 
-# output2 = (np.matmul(output1,w2)+b2)
+for i in range(len(output2)):
+    output2[i] = (b2[i] + output2[i])//32
+    
+    
+index_max = max(range(len(output2)), key=output2.__getitem__)
 
-# print(output2)
+
+print(f"Final 10 values {output2}")
+print(f"Final prediction {index_max}")
