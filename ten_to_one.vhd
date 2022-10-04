@@ -7,7 +7,7 @@ entity ten_to_one is
     clk : in std_logic;
     value: in std_logic_vector(15 downto 0) ;
     index : in integer;
-    max_index : out integer
+    max_index : out integer:= 11
   );
 end ten_to_one;
 

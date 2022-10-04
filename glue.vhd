@@ -107,8 +107,8 @@ architecture Behavioral of glue is
         );
     end component;
 
-    signal ram_addr         : integer;
-    signal rom_addr         : integer;
+    signal ram_addr         : integer := 0;
+    signal rom_addr         : integer := 0;
     signal ram_re           : std_logic;
     signal rom_re           : std_logic;
     signal ram_we           : std_logic;
@@ -121,7 +121,7 @@ architecture Behavioral of glue is
     signal ram_in           : std_logic_vector(15 downto 0);
     signal mac_out          : std_logic_vector(15 downto 0);
 
-    signal prediction       : integer                      := 11;
+    signal prediction       : integer;
 
     signal mac_controler    : std_logic                    := '0';
     signal ram_mux          : std_logic_vector(1 downto 0) := "00";
@@ -129,14 +129,15 @@ architecture Behavioral of glue is
     signal shifter_inp      : std_logic_vector(15 downto 0);
     signal relu_out         : std_logic_vector(15 downto 0);
 
+    signal prediction_slv   : std_logic_vector(3 downto 0);
+    signal prediction_uns  : unsigned(3 downto 0);
     signal ram_addr_slv     : std_logic_vector(9 downto 0);
     signal rom_addr_slv     : std_logic_vector(15 downto 0);
-    signal prediction_slv   : std_logic_vector(3 downto 0);
 begin
 
-    ram_addr_slv   <= std_logic_vector(to_unsigned(ram_addr, 10));
-    rom_addr_slv   <= std_logic_vector(to_unsigned(rom_addr, 16));
     prediction_slv <= std_logic_vector(to_unsigned(prediction, 4));
+    ram_addr_slv   <= std_logic_vector(to_unsigned(ram_addr, 10)) when ram_addr >= 0 else "0000000000";
+    rom_addr_slv   <= std_logic_vector(to_unsigned(rom_addr, 16));
 
     fsm_mapper : fsm port map(
 
@@ -220,7 +221,7 @@ begin
     an <= "1110";
 
     seven_seg_label : seven_seg_decoder port map(
-        sw1  => prediction_slv,
+        sw1  => prediction_slv(3 downto 0),
         seg1 => seg
     );
 

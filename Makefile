@@ -1,6 +1,6 @@
 all:
-	ghdl -a comparator.vhd 7_seg_decoder.vhd fsm.vhd mac.vhd ram.vhd register.vhd rom_mem.vhd shifter.vhd ten_to_one.vhd glue.vhd tb.vhd
-	ghdl -r TB_main --wave=wave.ghw
+	ghdl -a -fsynopsys  comparator.vhd 7_seg_decoder.vhd fsm.vhd mac.vhd ram.vhd register.vhd rom_mem.vhd shifter.vhd ten_to_one.vhd glue.vhd tb.vhd
+	ghdl -r TB_main --wave=wave.ghw --max-stack-alloc=0
 	gtkwave wave.ghw
 
 comp:

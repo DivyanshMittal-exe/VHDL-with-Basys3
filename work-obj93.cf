@@ -1,39 +1,42 @@
 v 4
+file . "tb.vhd" "fc33f640438071e5eda2cb6a2ac09ea39eee6a3c" "20221004070921.418":
+  entity tb_main at 1( 0) + 0 on 853;
+  architecture behavior of tb_main at 8( 102) + 0 on 854;
+file . "glue.vhd" "ed5a32c06712559becaeaf06cc36fe42b043a40a" "20221004070921.417":
+  entity glue at 1( 0) + 0 on 851;
+  architecture behavioral of glue at 16( 301) + 0 on 852;
+file . "ten_to_one.vhd" "54ce8f398ef9feb2f6a0bd14491d69df55afa682" "20221004070921.415":
+  entity ten_to_one at 1( 0) + 0 on 849;
+  architecture behavioral of ten_to_one at 14( 250) + 0 on 850;
+file . "rom_mem.vhd" "a98739b32971ce180473c81e0904e87903d0b3c7" "20221004070921.413":
+  entity rom_mem at 2( 1) + 0 on 845;
+  architecture behavioral of rom_mem at 22( 464) + 0 on 846;
+file . "fsm.vhd" "b2d3f98da0d7b59a9248b86ea5a44bb9331bc20f" "20221004070921.408":
+  entity fsm at 1( 0) + 0 on 837;
+  architecture behaviour of fsm at 18( 490) + 0 on 838;
+file . "7_seg_decoder.vhd" "7efdcfe121c8e06f4c2ea1ec310dab4940dc588f" "20221004070921.407":
+  entity seven_seg_decoder at 1( 0) + 0 on 835;
+  architecture behavioral of seven_seg_decoder at 14( 228) + 0 on 836;
+file . "ram.vhd" "79dcc1fa45a95296f992f3904b3e9ee194ea8da3" "20221004070921.410":
+  entity data_mem at 1( 0) + 0 on 841;
+  architecture arch of data_mem at 21( 524) + 0 on 842;
+file . "comparator.vhd" "c08e3c959a681cfe9f5d76c544ec72ca0d61e08f" "20221004070921.405":
+  entity relu at 1( 0) + 0 on 833;
+  architecture behavioral of relu at 15( 266) + 0 on 834;
+file . "TB_comparator.vhd" "f5c86c9415ac3e3f816f68f34b7a7eaa70d1fcc5" "20220915095913.074":
+  architecture behavior of tb at 8( 92) + 0 on 90;
+file . "mac.vhd" "d4f892a650b493acd3d19bb1eb85ce5e45ef269e" "20221004070921.409":
+  entity mac at 1( 0) + 0 on 839;
+  architecture behavioral of mac at 15( 293) + 0 on 840;
+file . "register.vhd" "5aca903d8cc520fb9f0e3858492fd101ec304567" "20221004070921.411":
+  entity reg at 1( 0) + 0 on 843;
+  architecture reg_arch of reg at 18( 351) + 0 on 844;
+file . "shifter.vhd" "7f92556c75f75b235083d7bffa569f306e5b7ee9" "20221004070921.414":
+  entity shifter at 1( 0) + 0 on 847;
+  architecture behavioral of shifter at 12( 204) + 0 on 848;
 file . "tb_shifter.vhd" "2bf416144262643b0e2edd3576c4187f579d295f" "20220915103820.827":
   entity tb at 1( 0) + 0 on 101;
   architecture beh of tb at 8( 92) + 0 on 102;
-file . "shifter.vhd" "7f92556c75f75b235083d7bffa569f306e5b7ee9" "20220928091252.733":
-  entity shifter at 1( 0) + 0 on 183;
-  architecture behavioral of shifter at 12( 204) + 0 on 184;
-file . "register.vhd" "5aca903d8cc520fb9f0e3858492fd101ec304567" "20220928091252.730":
-  entity reg at 1( 0) + 0 on 179;
-  architecture reg_arch of reg at 18( 351) + 0 on 180;
-file . "mac.vhd" "59be779931b3c673208ee411950ccb55dbf64b7b" "20220928091252.728":
-  entity mac at 1( 0) + 0 on 175;
-  architecture behavioral of mac at 15( 293) + 0 on 176;
-file . "TB_comparator.vhd" "f5c86c9415ac3e3f816f68f34b7a7eaa70d1fcc5" "20220915095913.074":
-  architecture behavior of tb at 8( 92) + 0 on 90;
-file . "comparator.vhd" "c08e3c959a681cfe9f5d76c544ec72ca0d61e08f" "20220928091252.723":
-  entity relu at 1( 0) + 0 on 169;
-  architecture behavioral of relu at 15( 266) + 0 on 170;
-file . "ram.vhd" "aaa8dfd1641aaff823a500a4925df26314af38c4" "20220928091252.729":
-  entity data_mem at 1( 0) + 0 on 177;
-  architecture arch of data_mem at 20( 490) + 0 on 178;
-file . "7_seg_decoder.vhd" "19cc4146117ffe99c8c0b5e1e8f5104584410aba" "20220928091252.725":
-  entity seven_seg_decoder at 1( 0) + 0 on 171;
-  architecture behavioral of seven_seg_decoder at 14( 228) + 0 on 172;
-file . "fsm.vhd" "e9a28c9bda8897a4526d255023049f905e9c4d64" "20220928091252.726":
-  entity fsm at 1( 0) + 0 on 173;
-  architecture behaviour of fsm at 27( 765) + 0 on 174;
-file . "rom_mem.vhd" "a36163e67c900f2c6f164e0a66564bef5e30f8d0" "20220928091252.732":
-  entity rom_mem at 1( 0) + 0 on 181;
-  architecture behavioral of rom_mem at 21( 466) + 0 on 182;
-file . "ten_to_one.vhd" "c2b72e498889cf35a82e3d911468a4599db79495" "20220928091252.734":
-  entity ten_to_one at 1( 0) + 0 on 185;
-  architecture behavioral of ten_to_one at 14( 245) + 0 on 186;
-file . "glue.vhd" "68f4f42497658e6ee99f577ecece276ccf85e2d6" "20220928091252.736":
-  entity glue at 1( 0) + 0 on 187;
-  architecture behavioral of glue at 13( 237) + 0 on 188;
-file . "tb.vhd" "cdaa8eac94ecb2800fe99f463518f8978b87ec63" "20220928091252.737":
-  entity tb_main at 1( 0) + 0 on 189;
-  architecture behavior of tb_main at 8( 102) + 0 on 190;
+file . "tb_mac.vhd" "ccda38e69030237748093538c2f43e815a070c6f" "20221004063821.709":
+  entity tb_mac at 1( 0) + 0 on 215;
+  architecture beh of tb_mac at 8( 100) + 0 on 216;

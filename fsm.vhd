@@ -56,7 +56,7 @@ begin
 
             case current_state is
                 when start =>
-                     report("Starting");
+                    report("Starting");
                     next_state <= load_img_in_ram;
                     -- addr
                 when load_img_in_ram =>
