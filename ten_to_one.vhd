@@ -12,13 +12,13 @@ entity ten_to_one is
 end ten_to_one;
 
 architecture behavioral of ten_to_one is
-    signal max_val: std_logic_vector(15 downto 0):= "0000000000000000";
+    signal max_val: std_logic_vector(15 downto 0):= "1000000000000000";
     signal max_index_local: integer:= 10;
 
 begin
   process(clk,index)
     begin
-      if rising_edge(clk) and index < 10 then
+      if rising_edge(clk) and index < 10 and index >= 0 then
          report("Value and index " & integer'image(to_integer(signed(value))) & " " &integer'image(index) );
         if signed(value) > signed(max_val) then
             max_val <= value;

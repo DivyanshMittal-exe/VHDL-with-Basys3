@@ -4,7 +4,7 @@ import random
 
 
 
-f = open("file_7.mif","r")
+f = open("./MNIST/imgdata_digit4.mif","r")
 
 data = f.readlines()
 
@@ -51,8 +51,12 @@ for i in range(64):
 for i in range(len(output1)):
     output1[i] = (b1[i] + output1[i])//32
     
+
     
 output1 = [0 if x < 0 else x for x in output1]
+for i,item in enumerate(output1):
+    if item != 0:
+        print(f"{i+800} : {hex(item)}  {item}")
 output2 = [0 for _ in range(10)]
 
 

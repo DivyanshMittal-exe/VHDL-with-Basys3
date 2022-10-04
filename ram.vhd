@@ -21,7 +21,7 @@ end data_mem;
 architecture arch of data_mem is
     type mem is array(0 to (ram_size - 1)) of std_logic_vector((data_width - 1) downto 0);
     signal data : mem := (
-        others => (others => '0')
+        others => (others => '1')
     );
 
     signal read_out    : std_logic_vector((data_width - 1) downto 0) := (others => '0');

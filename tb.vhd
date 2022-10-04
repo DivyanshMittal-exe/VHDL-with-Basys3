@@ -25,7 +25,7 @@ architecture behavior of TB_main is
 begin
     uut : glue 
     generic map(
-        file_name => "file_7.mif"
+        file_name => "imgdata_digit4.mif"
     )
     port map(
         clk => clk,

@@ -62,7 +62,7 @@ begin
                 when load_img_in_ram =>
                        report "The value of 'a' is " & integer'image(ram_pull_index);
 
-                    if ram_pull_index >= 783 then
+                    if ram_pull_index >= 784 then
                         report("Starting image load");
 
                         next_state <= layer_1_bookkeep;
@@ -84,7 +84,7 @@ begin
                 when layer_1_bookkeep =>
                     report("Bookkeeping l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i) );
 
-                    if l1_index_j >= 63 then
+                    if l1_index_j >= 64 then
                         next_state <= layer_2_bookkeep;
                         l2_index_i <= 0;
                         l2_index_j <= 0;
@@ -95,7 +95,7 @@ begin
 
                         
                     end if;
-                    ram_we   <= '1';
+                    ram_we        <= '1';
                     ram_mux       <= "01";
                     l1_index_i    <= 0;
                     mac_controler <= '1';
