@@ -16,7 +16,7 @@ entity FSM is
 end FSM;
 
 architecture behaviour of FSM is
-    type state_enum is (start, load_img_in_ram, layer_1_bookkeep, multiply_l1, layer_2_bookkeep, multiply_l2, get_max_of_ten, get_out, relu, adder1, adder2);
+    type state_enum is (start, load_img_in_ram, layer_1_bookkeep, multiply_l1, layer_2_bookkeep, multiply_l2, get_max_of_ten, get_out);
     signal current_state  : state_enum;
     signal next_state     : state_enum := start;
     -- signal mover := integer
@@ -115,7 +115,7 @@ begin
                 when multiply_l1 =>
                     report("Multiplying l1 " & integer'image(l1_index_j) & " " &integer'image(l1_index_i)& " "  &integer'image(1024 + l1_index_j * 784 + l1_index_i));
                     if l1_index_i >= 784 then
-                        next_state     <= adder1;
+                        next_state     <= layer_1_bookkeep;
                         rom_addr       <= 51200 + l1_index_j;
                         rom_re         <= '1';
                         ram_addr <= l1_index_j + 800;
@@ -134,19 +134,6 @@ begin
     
 
                     end if;
-
-                when adder1 =>
-                        next_state <= relu;
-                        ram_we <= '0';
-                        ram_re <= '0';
-                        rom_re <= '0';
-
-
-                when relu =>
-                    next_state <= layer_1_bookkeep;
-                    ram_we <= '0';
-                    ram_re <= '0';
-                    rom_re <= '0';
 
                 when layer_2_bookkeep =>
                            report("Bookkeeping l2 " & integer'image(l2_index_j) & " " &integer'image(l2_index_i) );
@@ -167,7 +154,7 @@ begin
                       report("Multiplying l2 " & integer'image(l2_index_j) & " " &integer'image(l2_index_i) );
 
                     if l2_index_i >= 64 then
-                        next_state     <= adder2;
+                        next_state     <= layer_2_bookkeep;
                         rom_addr       <= 51904 + l2_index_j;
                         rom_re         <= '1';
                         ram_addr <= l2_index_j + 864;
@@ -186,12 +173,6 @@ begin
                     ram_re   <= '1';
                     rom_re      <= '1';
                     -- ram_mux        <= '1';
-
-                when adder2 =>
-                    next_state <= layer_2_bookkeep;
-                    ram_we <= '0';
-                    ram_re <= '0';
-                    rom_re <= '0';
 
                 when get_max_of_ten =>
                     if ten_max_index_local >=  10 then

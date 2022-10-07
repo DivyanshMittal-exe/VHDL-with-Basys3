@@ -127,7 +127,7 @@ architecture Behavioral of glue is
     signal rom_out          : std_logic_vector(7 downto 0);
     signal ram_out          : std_logic_vector(15 downto 0);
 
-    signal adder_out      : std_logic_vector(15 downto 0);
+    signal shifted_out      : std_logic_vector(15 downto 0);
 
     signal ram_in           : std_logic_vector(15 downto 0);
     signal mac_out          : std_logic_vector(15 downto 0);
@@ -137,6 +137,7 @@ architecture Behavioral of glue is
     signal mac_controler    : std_logic                    := '0';
     signal ram_mux          : std_logic_vector(1 downto 0) := "00";
     signal ten_to_one_index : integer                      := 0;
+    signal shifter_inp      : std_logic_vector(15 downto 0);
     signal relu_out         : std_logic_vector(15 downto 0);
 
     signal prediction_slv   : std_logic_vector(3 downto 0);
@@ -193,7 +194,7 @@ begin
 
     ram_in <= "00000000" & rom_out when ram_mux = "00" else
         relu_out when ram_mux = "01" else
-        adder_out;
+        shifted_out;
 
 
     ram_data_mapper : data_mem
@@ -219,20 +220,20 @@ begin
         dout  => mac_out
     );
 
-    adder_mapper : adder port map(
-        clk => clk0,
-        inp1 => mac_out,
-        inp2 => rom_out,
-        outp => adder_out
-    )
+    shifter_inp <= std_logic_vector(signed(rom_out) + signed(mac_out));
+
+    shifter_mapper : shifter
+    port map(
+        inp  => shifter_inp,
+        outp => shifted_out
+    );
 
     relu_mapper : relu
     generic map(
         inp_width => 16
     )
     port map(
-        clk => clk0,
-        inp  => adder_out,
+        inp  => shifted_out,
         outp => relu_out
     );
     ten_to_one_mapper : ten_to_one
