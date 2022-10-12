@@ -10,7 +10,7 @@ architecture behavior of TB_main is
 
     component glue is
         generic(
-            file_name : string := "imgdata.mif"
+            file_name : string := "imgdata_digit5.mif"
       );
         port (
             clk : in std_logic;
@@ -25,7 +25,7 @@ architecture behavior of TB_main is
 begin
     uut : glue 
     generic map(
-        file_name => "file_1.mif"
+        file_name => "imgdata_digit5.mif"
     )
     port map(
         clk => clk,
@@ -41,7 +41,7 @@ begin
         clk <= '0';
         wait for 1 ps;
 
-        identifier : for i in 0 to 65535 loop
+        identifier : for i in 0 to 500000 loop
             clk <= '1';
             wait for 1 ps;
             clk <= '0';

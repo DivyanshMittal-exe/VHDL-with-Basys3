@@ -7,7 +7,7 @@ entity ten_to_one is
     clk : in std_logic;
     value: in std_logic_vector(15 downto 0) ;
     index : in integer;
-    max_index : out integer:= 11
+    max_index : out integer
   );
 end ten_to_one;
 
@@ -20,11 +20,11 @@ begin
     begin
       if rising_edge(clk) and index < 10 and index >= 0 then
          report("Value and index " & integer'image(to_integer(signed(value))) & " " &integer'image(index) );
-        if signed(value) > signed(max_val) then
+        if signed(value) >= signed(max_val) then
             max_val <= value;
-            max_index_local <= index;
+            max_index <= index;
         end if;
       end if;
     end process;
-    max_index <= max_index_local;
+--    max_index <= max_index_local;
 end;
