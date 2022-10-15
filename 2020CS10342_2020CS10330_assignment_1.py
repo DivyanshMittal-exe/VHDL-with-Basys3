@@ -63,6 +63,7 @@ def is_legal_region(kmap_function, term):
                 
         all_terms = all_items_new
     
+    print(all_terms)
 
     
     col_size = math.ceil(n/2)
@@ -77,9 +78,9 @@ def is_legal_region(kmap_function, term):
     all_row_indices = []
     all_col_indices = []
     
-    for term in all_terms:
-        col_term = term[:col_size]
-        row_term = term[col_size:]
+    for mterm in all_terms:
+        col_term = mterm[:col_size]
+        row_term = mterm[col_size:]
         
         #Map the term to its column index
         col_index = gcode_col.index(col_term)
@@ -139,6 +140,7 @@ def is_legal_region(kmap_function, term):
 if __name__ == '__main__':
     kmap = [[0,1,1,0], ['x',1,'x',0], [1,0,0,0], [1,'x',0,0]]
     term = [None, 1, 0, None]
+    term = [0, None, None, 1]
     print(is_legal_region(kmap_function=kmap,term=term))
     
     term = [None, 0, 1, 0]

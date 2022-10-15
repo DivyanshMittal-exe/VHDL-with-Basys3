@@ -7,6 +7,7 @@ import random
 solver = __import__('2020CS10342_2020CS10330_assignment_1')
 
 k = random.randrange(3) + 2
+# k = 3
 
 if k == 2:
     k_map_gen = [[random.randrange(3) for _ in range(2)] for _ in range(2)]
