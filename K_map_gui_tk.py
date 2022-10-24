@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Created on Tue Aug  2 13:06:36 2022
 
@@ -10,7 +12,6 @@ Installing tkinter and PIL
 2) pip install pillow
 """
 
-# Added .py to the end. Removed due to autograder breaking
 from tkinter import *
 from PIL import Image, ImageTk
 
@@ -49,16 +50,14 @@ class kmap(Tk):
             self.canvas.create_image(x1, y1, image=self.images[-1], anchor='nw')
         self.canvas.create_rectangle(x1, y1, x2, y2, **kwargs)
 
-    def __init__(self, values=[[0,0,0,0], [0,0,0,0]] , terms = [None,None,None]):
+    def __init__(self, values=[[0,0,0,0], [0,0,0,0]]):
         super(kmap, self).__init__()
         self.images = []
-        self.title(f"Kmap for {terms}")
+        self.title("Kmap")
         self.minsize(400, 400)
         self.canvas = Canvas(self, height=400, width=400, bg='#fff')
         self.rsz = len(values)
         self.csz = len(values[0])
-        
-        
         
         self.m = []
         labelh = headings[(self.rsz,self.csz)]
@@ -76,9 +75,6 @@ class kmap(Tk):
                 else:
                     self.canvas.create_text(50*j+75, 50*i+75, text=str(values[i][j]))
         
-        self.canvas.pack()
-        
-        self.canvas.create_text(150, (2 + self.rsz)*50, text=f"Terms are {terms}", fill="black", font=('Helvetica 15 bold'))
         self.canvas.pack()
     
     def draw_region(self, x1, y1, x2, y2, color):
