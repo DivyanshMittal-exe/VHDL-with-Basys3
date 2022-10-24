@@ -1,5 +1,3 @@
-import math
-from tabnanny import check
 from K_map_gui_tk import *
 
 
