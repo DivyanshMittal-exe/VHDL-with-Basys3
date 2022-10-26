@@ -1,5 +1,12 @@
-from re import L
+def binary_to_term(binary_term,updated_term):
+    red_term = ""
+    
+    for id,term_type in enumerate(binary_term):
+        if not updated_term[id]:
+            red_term += chr(97 + id)
+            red_term += "'" if term_type == '0' else ""
 
+    return red_term
 
 def comb_function_expansion(func_TRUE, func_DC):
     """
@@ -14,6 +21,8 @@ def comb_function_expansion(func_TRUE, func_DC):
 
         
     term_to_binary = lambda t,s: s if len(t) == 0 else term_to_binary(t[2:],s + '0') if len(t) > 1 and t[1] == "'" else term_to_binary(t[1:],s + '1')
+    
+
     
     if func_TRUE != []:
         n = len(term_to_binary(func_TRUE[0],""))
@@ -44,27 +53,32 @@ def comb_function_expansion(func_TRUE, func_DC):
         binary_term = term_to_binary(term,"")
 
         while True:
+            print(f"Current term expansion: '{binary_to_term(binary_term,updated_term)}'")
             for not_updated_term_index in not_updated_term:
                 
                 new_binary_term = f"{binary_term[:not_updated_term_index]}{'0' if binary_term[not_updated_term_index] == '1' else '1'}{binary_term[not_updated_term_index+1:]}"
                 
+                print(f"Next Legal Terms for Expansion for {chr(97 + not_updated_term_index)}:", end = "")
                 for term_to_check in get_term_to_combine(new_binary_term,0,updated_term,""):
+                    print(f" {binary_to_term(term_to_check,updated_term)}", end = "")
                     if term_to_check not in all_term_bin:
+                        print(f"\n{binary_to_term(term_to_check,updated_term)} not present")
                         break
+                    print(",",end="")
                 else:
+                    
                     updated_term[not_updated_term_index] = True   
                     not_updated_term.remove(not_updated_term_index)
+                    print(f"\nReduced to {binary_to_term(binary_term,updated_term)}")
                     break
             else:
                 break
         
         
-        red_term = ""
-        
-        for id,term_type in enumerate(binary_term):
-            if not updated_term[id]:
-                red_term += chr(97 + id)
-                red_term += "'" if term_type == '0' else ""
+        red_term = binary_to_term(binary_term,updated_term)
+        print(f"Reduced {term} to {red_term}")
+        print()
+        print()
                 
         reduced_terms.append(red_term)                    
     
