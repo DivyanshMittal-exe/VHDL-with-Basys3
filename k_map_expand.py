@@ -53,7 +53,7 @@ def comb_function_expansion(func_TRUE, func_DC):
         binary_term = term_to_binary(term,"")
 
         while True:
-            print(f"Current term expansion: '{binary_to_term(binary_term,updated_term)}'")
+            print(f"Current term expansion: {binary_to_term(binary_term,updated_term)}")
             for not_updated_term_index in not_updated_term:
                 
                 new_binary_term = f"{binary_term[:not_updated_term_index]}{'0' if binary_term[not_updated_term_index] == '1' else '1'}{binary_term[not_updated_term_index+1:]}"
