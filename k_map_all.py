@@ -29,16 +29,11 @@ def comb_function_expansion(func_TRUE, func_DC):
         
     term_to_binary = lambda t,s: s if len(t) == 0 else term_to_binary(t[2:],s << 1) if len(t) > 1 and t[1] == "'" else term_to_binary(t[1:],(s << 1) + 1)
     
-
-    
-    term_to_binary_str = lambda t,s: s if len(t) == 0 else term_to_binary_str(t[2:],s + '0') if len(t) > 1 and t[1] == "'" else term_to_binary_str(t[1:],s + '1')
-    
-
     
     if func_TRUE != []:
-        n = len(term_to_binary_str(func_TRUE[0],""))
+        n = len(func_TRUE[0]) - func_TRUE[0].count("'")
     elif func_DC != []:
-        n = len(term_to_binary_str(func_DC[0],""))
+        n = len(func_DC[0]) - func_DC[0].count("'")
     else:
         n = 4
     
@@ -64,12 +59,13 @@ def comb_function_expansion(func_TRUE, func_DC):
     
     
     while True:
-        terms_under_conside = term_all[-1]
+        terms_under_consideration = term_all[-1]
         new_term_list = []
-        for i in range(len(terms_under_conside)):
+        new_term_set = set()
+        for i in range(len(terms_under_consideration)):
             for j in range(i):
-                t1 , t1_mask = terms_under_conside[i]
-                t2 , t2_mask = terms_under_conside[j]
+                t1 , t1_mask = terms_under_consideration[i]
+                t2 , t2_mask = terms_under_consideration[j]
                 
                 if t1_mask == t2_mask:
                 
@@ -77,8 +73,9 @@ def comb_function_expansion(func_TRUE, func_DC):
                     
                     if diff & (diff -1) == 0:
                         term_to_add = ((t1 | diff), (t1_mask | diff))
-                        if term_to_add not in new_term_list:
+                        if term_to_add not in new_term_set:
                             new_term_list.append(term_to_add)
+                            new_term_set.add(term_to_add)
         
         if new_term_list == []:
             break
