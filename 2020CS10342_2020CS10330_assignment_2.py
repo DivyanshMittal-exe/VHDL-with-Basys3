@@ -80,6 +80,11 @@ def comb_function_expansion(func_TRUE, func_DC):
         if new_term_list == []:
             break
         
+        new_list_str = [binary_to_term(term,mask,n) for (term,mask) in new_term_list]
+        l_s = len(new_list_str[0]) - new_list_str[0].count("'")
+        print(f"Reductions with {l_s} literals")
+        print(new_list_str)
+        
         term_all.append(new_term_list)
     
     for t_term in all_true_bin:
@@ -104,5 +109,6 @@ if __name__ == "__main__":
     func_TRUE = ["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"]
     func_DC = ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]
     
+    print("Final output")
     o = comb_function_expansion(func_TRUE,func_DC)
     print(o)
