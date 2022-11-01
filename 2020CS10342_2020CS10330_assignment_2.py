@@ -41,16 +41,6 @@ def comb_function_expansion(func_TRUE, func_DC):
     all_term_bin = [(term_to_binary(term,0),0) for term in func_TRUE + func_DC]
     all_true_bin = [term_to_binary(term,0) for term in func_TRUE]
     
-    
-
-    # def get_term_to_combine(term,current_index,updated_term,term_to_yield):
-    #     if current_index >= len(term):
-    #         yield term_to_yield
-    #     elif updated_term[current_index]:
-    #         yield from get_term_to_combine(term,current_index + 1, updated_term, term_to_yield << 1)
-    #         yield from get_term_to_combine(term,current_index + 1, updated_term, (term_to_yield << 1) + 1)
-    #     else:
-    #         yield from get_term_to_combine(term,current_index + 1, updated_term, (term_to_yield << 1) + term[current_index])
 
     term_all = [all_term_bin]
     
