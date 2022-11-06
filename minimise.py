@@ -39,7 +39,7 @@ def comb_function_expansion(func_TRUE, func_DC):
     
     
     all_term_bin = [(term_to_binary(term,0),0) for term in func_TRUE + func_DC]
-    all_true_bin = [term_to_binary(term,0) for term in func_TRUE]
+    # all_true_bin = [term_to_binary(term,0) for term in func_TRUE]
     
 
     term_all = [all_term_bin]
@@ -77,7 +77,7 @@ def comb_function_expansion(func_TRUE, func_DC):
         
         term_all.append(new_term_list)
     
-    for t_term in all_true_bin:
+    for t_term,_ in all_term_bin:
                     
         am_i_done = False
         for term_list in reversed(term_all):
@@ -90,7 +90,81 @@ def comb_function_expansion(func_TRUE, func_DC):
             
             if am_i_done:
                 break
+    
+    def term_sotter(term_mask_pair):
+        _,mask = term_mask_pair
+        count = 0
+        for i in range(n):
+            if mask & 1 << i:
+                count += 1
+        return count
+    
+    reduced_terms.sort(key= term_sotter, reverse=True)
+    
+    did_i_reduce = True
+    reduced_list = []
+    
+    
+    while did_i_reduce:
+        term_m,mask_m = reduced_terms.pop(0)
+        reduced_list.append((term_m,mask_m))
+        new_red_term = []
+        did_i_reduce = False
+        for term,mask in reduced_terms:
+            if term_m | mask_m != term | mask:
+                new_red_term.append((term,mask))
+                did_i_reduce = True
+        reduced_terms = new_red_term
+        print(reduced_terms)
+
+
+    occourence_count = {}
+
+    all_t_bin = [(term_to_binary(term,0),0) for term in func_TRUE]
+    all_dc_bin = [(term_to_binary(term,0),0) for term in func_DC]
+
+    for term,_ in all_dc_bin:
+        occourence_count[term] = len(reduced_list) + 1
+
+    for term,_ in all_t_bin:
+        for (min_term,min_mask) in reduced_list:
+            if (term | min_mask) == min_term:
+                occourence_count[term] += 1
         
+
+    
+    # reduced_terms = reduced_list
+
+    # use_dict = {i for i in range(0,2*n)}
+    
+    # for term,mask in reduced_terms:
+    #     for i in range(n):
+    #         if mask & (1 << i):
+    #             use_dict[i] += 1
+    #             use_dict[n + i] += 1
+    #         elif term & (1 << i):
+    #             use_dict[i] += 1
+    #         else:
+    #             use_dict[n + i] += 1
+    
+    # new_list = []
+    # for term,mask in reduced_terms:
+        
+        
+    # Still need to reduce
+
+    # for i in range(len(reduced_terms)):
+    #     for j in range(i):
+    #         for k in range(j):
+    #             t_i,m_i = reduced_terms[i]
+    #             t_j,m_j = reduced_terms[j]
+    #             t_k,m_k = reduced_terms[k]
+                
+    #             if (m_i | m_j) 
+    
+    print([binary_to_term(term,mask,n) for (term,mask) in reduced_terms])
+    
+    
     reduced_terms = [binary_to_term(term,mask,n) for (term,mask) in reduced_terms]
     
     return reduced_terms
