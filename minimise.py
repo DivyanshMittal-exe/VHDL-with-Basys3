@@ -129,45 +129,72 @@ def comb_function_expansion(func_TRUE, func_DC):
     for term,_ in all_t_bin:
         for (min_term,min_mask) in reduced_list:
             if (term | min_mask) == min_term:
-                occourence_count[term] += 1
-        
+                if term in occourence_count:
+                    occourence_count[term] += 1
+                else:
+                    occourence_count[term] = 1
+    
+    
+    def get_term_in_minterm(term_list,mask_list,index,term_to_yield):
+        if index >= len(term_list):
+            yield int(term_to_yield, base=2)
+        elif mask_list[index] == '1':
+            yield from get_term_in_minterm(term_list,mask_list,index + 1, term_to_yield + '0')
+            yield from get_term_in_minterm(term_list,mask_list,index + 1, term_to_yield + '1')
+        else:
+            yield from get_term_in_minterm(term_list,mask_list,index + 1, term_to_yield + term_list[index])
 
     
-    # reduced_terms = reduced_list
-
-    # use_dict = {i for i in range(0,2*n)}
+    reduced_list_no_crossover = []
     
-    # for term,mask in reduced_terms:
-    #     for i in range(n):
-    #         if mask & (1 << i):
-    #             use_dict[i] += 1
-    #             use_dict[n + i] += 1
-    #         elif term & (1 << i):
-    #             use_dict[i] += 1
-    #         else:
-    #             use_dict[n + i] += 1
+    all_t_bin_set = {(term_to_binary(term,0),0) for term in func_TRUE}
     
-    # new_list = []
-    # for term,mask in reduced_terms:
+    def term_sotter_1_count(term_mask_pair):
         
         
-    # Still need to reduce
-
-    # for i in range(len(reduced_terms)):
-    #     for j in range(i):
-    #         for k in range(j):
-    #             t_i,m_i = reduced_terms[i]
-    #             t_j,m_j = reduced_terms[j]
-    #             t_k,m_k = reduced_terms[k]
+        min_term,mask = term_mask_pair
+        
+        term_str = "{0:b}".format(min_term).zfill(n)
+        term_list = list(term_str)
+        mask_str = "{0:b}".format(mask).zfill(n)
+        mask_list = list(mask_str)
+        
+        count = 0
+        
+        for term in get_term_in_minterm(term_list,mask_list,0,""):
+            if term in all_t_bin_set:
+                count += 1
+        return count
+    
+    reduced_list.sort(key= term_sotter_1_count)
+    
+    
+    for min_term,mask in reduced_list:
+        term_str = "{0:b}".format(min_term).zfill(n)
+        term_list = list(term_str)
+        mask_str = "{0:b}".format(mask).zfill(n)
+        mask_list = list(mask_str)
+        
+        for term in get_term_in_minterm(term_list,mask_list,0,""):
+            if occourence_count[term] == 1:
+                reduced_list_no_crossover.append((min_term,mask))
+                break
                 
-    #             if (m_i | m_j) 
+            if occourence_count[term] == 0:
+                print(f"LOG {term}")
+                
+        else:
+            for term in get_term_in_minterm(term_list,mask_list,0,""):
+                occourence_count[term] -= 1
+            
+            
     
-    print([binary_to_term(term,mask,n) for (term,mask) in reduced_terms])
+    print([binary_to_term(term,mask,n) for (term,mask) in reduced_list_no_crossover])
     
     
-    reduced_terms = [binary_to_term(term,mask,n) for (term,mask) in reduced_terms]
+    reduced_list_no_crossover = [binary_to_term(term,mask,n) for (term,mask) in reduced_list_no_crossover]
     
-    return reduced_terms
+    return reduced_list_no_crossover
 
 if __name__ == "__main__":
     func_TRUE = ["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"]
