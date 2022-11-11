@@ -110,12 +110,24 @@ def comb_function_expansion(func_TRUE, func_DC):
         reduced_list.append((term_m,mask_m))
         new_red_term = []
         did_i_reduce = False
+        
+        print(f"Checking term reduction by {binary_to_term(term_m,mask_m,n)}")
+        print(f"Term removed: ", end = "")
         for term,mask in reduced_terms:
-            if term_m | mask_m != term | mask:
+            
+            if mask_m & mask == mask and term_m|mask_m == term|mask:
+                print(f"{binary_to_term(term,mask,n)}" , end = ", ")
+            else:
                 new_red_term.append((term,mask))
                 did_i_reduce = True
+            # if term_m | mask_m != term | mask:
+            #     new_red_term.append((term,mask))
+            #     did_i_reduce = True
+            # else:
+            #     print(f"{binary_to_term(term,mask,n)}" , end = ", ")
         reduced_terms = new_red_term
-        print(reduced_terms)
+        print()
+        print(f"Now left with {[binary_to_term(term,mask,n) for (term,mask) in reduced_terms]} to reduce")
 
 
     occourence_count = {}
@@ -168,6 +180,7 @@ def comb_function_expansion(func_TRUE, func_DC):
     
     reduced_list.sort(key= term_sotter_1_count)
     
+    # print(f"{reduced_list}") 
     
     for min_term,mask in reduced_list:
         term_str = "{0:b}".format(min_term).zfill(n)
@@ -184,9 +197,10 @@ def comb_function_expansion(func_TRUE, func_DC):
                 print(f"LOG {term}")
                 
         else:
+            print(f"Removing redundant term {binary_to_term(min_term,mask,n)}")
+            
             for term in get_term_in_minterm(term_list,mask_list,0,""):
                 occourence_count[term] -= 1
-            
             
     
     print([binary_to_term(term,mask,n) for (term,mask) in reduced_list_no_crossover])
@@ -197,9 +211,12 @@ def comb_function_expansion(func_TRUE, func_DC):
     return reduced_list_no_crossover
 
 if __name__ == "__main__":
-    func_TRUE = ["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"]
-    func_DC = ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]
+    func_TRUE = ["a'bc'd'", "abc'd'", "a'b'c'd", "a'bc'd", "a'b'cd"]
+    func_DC = ["abc'd"]
+
+
+
     
-    print("Final output")
     o = comb_function_expansion(func_TRUE,func_DC)
+    print("Final output")
     print(o)
