@@ -115,7 +115,7 @@ def comb_function_expansion(func_TRUE, func_DC):
         print(f"Term removed: ", end = "")
         for term,mask in reduced_terms:
             
-            if mask_m & mask == mask and term_m|mask_m == term|mask:
+            if mask_m & mask == mask and term_m|mask_m == term|mask_m:
                 print(f"{binary_to_term(term,mask,n)}" , end = ", ")
             else:
                 new_red_term.append((term,mask))
@@ -211,9 +211,8 @@ def comb_function_expansion(func_TRUE, func_DC):
     return reduced_list_no_crossover
 
 if __name__ == "__main__":
-    func_TRUE = ["a'bc'd'", "abc'd'", "a'b'c'd", "a'bc'd", "a'b'cd"]
-    func_DC = ["abc'd"]
-
+    func_TRUE = ["a'b'c", "a'bc", "a'bc'", "ab'c'"]
+    func_DC = ["abc'"]
 
 
     
