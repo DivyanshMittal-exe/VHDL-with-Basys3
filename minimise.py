@@ -129,7 +129,8 @@ def comb_function_expansion(func_TRUE, func_DC):
         print()
         print(f"Now left with {[binary_to_term(term,mask,n) for (term,mask) in reduced_terms]} to reduce")
 
-
+    print(f"Currently maximal redn is {[binary_to_term(term,mask,n) for (term,mask) in reduced_list]}")
+    
     occourence_count = {}
 
     all_t_bin = [(term_to_binary(term,0),0) for term in func_TRUE]
@@ -211,10 +212,15 @@ def comb_function_expansion(func_TRUE, func_DC):
     return reduced_list_no_crossover
 
 if __name__ == "__main__":
-    func_TRUE = ["a'b'c", "a'bc", "a'bc'", "ab'c'"]
-    func_DC = ["abc'"]
+    # func_TRUE = ['abcdef', "abcd'e'f", "abc'd'ef", "abc'd'e'f", "abc'd'e'f'", "ab'cde'f", "ab'cde'f'", "ab'cd'ef'", "ab'c'def", "ab'c'd'ef'", "ab'c'd'e'f", "ab'c'd'e'f'", "a'bcdef", "a'bc'def", "a'bc'def'", "a'bc'd'e'f", "a'bc'd'e'f'", "a'b'cde'f", "a'b'cd'ef", "a'b'c'def", "a'b'c'de'f", "a'b'c'd'ef'"]
+    # func_DC = ["abcde'f'", "abcd'ef'", "abc'def", "abc'de'f", "ab'cdef", "ab'cdef'", "ab'c'def'", "a'bcdef'", "a'bcde'f'", "a'bcd'ef", "a'bcd'ef'", "a'bcd'e'f", "a'bc'de'f'", "a'bc'd'ef", "a'bc'd'ef'", "a'b'cde'f'", "a'b'cd'e'f'", "a'b'c'd'e'f", "a'b'c'd'e'f'"]
+    
+    # func_TRUE = ['abcd', "abc'd'", "ab'c'd'", "a'b'cd'", "a'b'c'd"]
+    # func_DC = ["abcd'", "abc'd"]
 
 
+    func_TRUE = ["abcde'f", "abcde'f'", "abcd'ef", "abcd'ef'", "abc'd'e'f", "ab'cd'ef", "ab'cd'ef'", "ab'cd'e'f'", "ab'c'def", "ab'c'de'f", "ab'c'de'f'", "a'bcdef", "a'bcdef'", "a'bcde'f", "a'bcde'f'", "a'bc'de'f", "a'bc'de'f'", "a'bc'd'ef'", "a'bc'd'e'f'", "a'b'cde'f", "a'b'c'def", "a'b'c'de'f'", "a'b'c'd'ef'", "a'b'c'd'e'f'"]
+    func_DC = ['abcdef', "abc'def", "abc'def'", "abc'de'f'", "ab'cde'f", "ab'cd'e'f", "ab'c'def'", "ab'c'd'ef'", "ab'c'd'e'f'", "a'bcd'ef'", "a'bc'd'ef", "a'b'cdef", "a'b'cdef'", "a'b'cde'f'", "a'b'c'de'f", "a'b'c'd'ef", "a'b'c'd'e'f"]
     
     o = comb_function_expansion(func_TRUE,func_DC)
     print("Final output")
